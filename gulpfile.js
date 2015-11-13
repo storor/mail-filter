@@ -13,3 +13,7 @@ gulp.task('test', ['coffee'], function() {
   gulp.src('./dest/*.js')
 		.pipe(jasmine());
 });
+
+gulp.task('wt', function() {
+  gulp.watch('./*.coffee', ['test']);
+});

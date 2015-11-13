@@ -1,1 +1,3 @@
-module.exports = ->
+filter = (messeges, filters) ->
+
+module.exports = filter
