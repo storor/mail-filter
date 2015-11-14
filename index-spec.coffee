@@ -27,7 +27,7 @@ describe "Filter function", ->
       msg2: ['tag spam', 'forward to jill@elsewhere.com']
       msg3: ['tag work']
   
-  xit "should filter and match rules", ->
+  it "should filter and match rules", ->
     actual = filter input, rules
     expect(actual).toEqual(expected)
   
