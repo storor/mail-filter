@@ -30,3 +30,11 @@ describe "Filter", ->
   it "should filter and match rules", ->
     actual = filter input, rules
     expect(actual).toEqual(expected)
+  
+  it "has to apply rule with no 'from' and 'to' to all messages", ->
+    action = 'universal rule'
+    actual = filter input, [{action: action}]
+    expect(actual).toEqual
+      msg1: [action]
+      msg2: [action]
+      msg3: [action]
