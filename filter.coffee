@@ -4,7 +4,9 @@ class Filter
     expression? and (expression.indexOf('*') >= 0 or expression.indexOf('?') >= 0)
 
   convertWildcard: (expression)->
-    converted = expression.replace '*', '.*'
+    converted = expression
+      .replace /\*/g, '.*'
+      .replace /\?/g, '.'
     new RegExp converted
     
   parse: (rule) ->

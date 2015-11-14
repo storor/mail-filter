@@ -26,10 +26,14 @@ describe "Filter Object", ->
         expect(filter.parse rule).toBe(rule)
         
       describe "convertWildcard", ->
-        it "should return regexp instead of string with * ", ->
+        it "should return regexp instead of string with wildcards ", ->
           actual = filter.convertWildcard '*abc'
           expect(actual).toEqual(/.*abc/)
-      
+          actual = filter.convertWildcard '?abc'
+          expect(actual).toEqual(/.abc/)
+          actual = filter.convertWildcard '?abc?'
+          expect(actual).toEqual(/.abc./)
+        
     describe "apply", ->
       it "should compare with string value of rule if it has no wildcards", ->
         msg = from: 'a', to: 'b'
