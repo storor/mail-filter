@@ -38,3 +38,18 @@ describe "Filter", ->
       msg1: [action]
       msg2: [action]
       msg3: [action]
+  
+  it "should return empty object if empty params are passed", ->
+    actual = filter {}, []
+    expect(actual).toEqual {}
+  
+  it "should return empty object if no messages are passed", ->
+    actual = filter {}, rules
+    expect(actual).toEqual {}
+    
+  it "should return object with empty rule array if no rules are passed", ->
+    actual = filter input, []
+    expect(actual).toEqual
+      msg1: []
+      msg2: []
+      msg3: []
