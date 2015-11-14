@@ -27,11 +27,23 @@ describe "Filter function", ->
       msg2: ['tag spam', 'forward to jill@elsewhere.com']
       msg3: ['tag work']
   
-  it "should filter and match rules", ->
+  xit "should filter and match rules", ->
     actual = filter input, rules
     expect(actual).toEqual(expected)
   
-  xit "has to apply rule with no 'from' and 'to' to all messages", ->
+  it "should match rules for simple strings without wildcards", ->
+    rules = [
+      {from: 'a', action: 'an action'},
+      {to: 'b', action: 'second action'},
+      {from: 'a', to: 'b', action: 'third action'}      
+    ]
+    input = msg:
+      from: 'a', to: 'b'
+    actual = filter input, rules
+    expect(actual).toEqual
+      msg: ['an action', 'second action', 'third action']
+    
+  it "has to apply rule with no 'from' and 'to' to all messages", ->
     action = 'universal rule'
     actual = filter input, [{action: action}]
     expect(actual).toEqual

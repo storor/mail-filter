@@ -24,3 +24,19 @@ describe "Filter Object", ->
         expect(filter.parse rule).toBe(rule)
         rule = action: 'an action', from: 'cde'
         expect(filter.parse rule).toBe(rule)
+      
+    describe "apply", ->
+      it "should compare with string value of rule if it has no wildcards", ->
+        msg = from: 'a', to: 'b'
+        rule = from: 'a', action: 'c'
+        actual = filter.apply 'msg', msg, rule 
+        expect(actual).toEqual  
+          message: 'msg'
+          action: rule.action
+      
+      describe "match", ->
+        it "should return yes if strings are equal", ->
+          expect(filter.match 'a', 'a').toBeTruthy()
+
+        it "should return no if strings are not equal", ->
+          expect(filter.match 'a', 'b').not.toBeTruthy()
