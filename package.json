@@ -11,6 +11,14 @@
     "gulp-jasmine": "^2.2.1",
     "gulp-util": "^3.0.7"
   },
+  "coffeelintConfig": {          
+    "max_line_length": {         
+      "name": "max_line_length", 
+      "value": 120,              
+      "level": "warn",           
+      "limitComments": true      
+    }                            
+  },                             
   "repository": {
     "type": "git",
     "url": ""

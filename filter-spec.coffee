@@ -11,8 +11,8 @@ describe "Filter Object", ->
   describe "parse rule", ->
     describe "containWildcards", ->
       it "should return true if there is a wildcard", ->
-        expect(filter.containWildcards '*smth' ).toBeTruthy()  
-        expect(filter.containWildcards '?smth' ).toBeTruthy()  
+        expect(filter.containWildcards '*smth' ).toBeTruthy()
+        expect(filter.containWildcards '?smth' ).toBeTruthy()
         expect(filter.containWildcards 'smth' ).not.toBeTruthy()
     describe "parse", ->
       it "should return rule in its original state if there were no wildcards", ->
@@ -28,18 +28,18 @@ describe "Filter Object", ->
       describe "convertWildcard", ->
         it "should return regexp instead of string with wildcards ", ->
           actual = filter.convertWildcard '*abc'
-          expect(actual).toEqual(/.*abc/)
+          expect(actual).toEqual(new RegExp("#{filter.allowedCharset}*abc"))
           actual = filter.convertWildcard '?abc'
-          expect(actual).toEqual(/.abc/)
+          expect(actual).toEqual(new RegExp("#{filter.allowedCharset}abc"))
           actual = filter.convertWildcard '?abc?'
-          expect(actual).toEqual(/.abc./)
+          expect(actual).toEqual(new RegExp("#{filter.allowedCharset}abc#{filter.allowedCharset}"))
         
     describe "apply", ->
       it "should compare with string value of rule if it has no wildcards", ->
         msg = from: 'a', to: 'b'
         rule = from: 'a', action: 'c'
-        actual = filter.apply 'msg', msg, rule 
-        expect(actual).toEqual  
+        actual = filter.apply 'msg', msg, rule
+        expect(actual).toEqual
           message: 'msg'
           action: rule.action
       

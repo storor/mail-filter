@@ -1,12 +1,14 @@
 class Filter
   
+  allowedCharset: '[\x20-\x7F]'
+  
   containWildcards: (expression)->
     expression? and (expression.indexOf('*') >= 0 or expression.indexOf('?') >= 0)
 
   convertWildcard: (expression)->
     converted = expression
-      .replace /\*/g, '.*'
-      .replace /\?/g, '.'
+      .replace /\*/g, "#{@allowedCharset}*"
+      .replace /\?/g, @allowedCharset
     new RegExp converted
     
   parse: (rule) ->
@@ -41,8 +43,8 @@ class Filter
     result = message: key
     if rule.from
       expected++
-      actual++ if @match message.from, rule.from 
-    if rule.to  
+      actual++ if @match message.from, rule.from
+    if rule.to
       expected++
       actual++ if @match message.to, rule.to
     if expected is actual
@@ -54,7 +56,7 @@ class Filter
     unless not messages or (messagesKeys = Object.keys messages ).length is 0
       if not rules or rules.length is 0
         expected[message] = [] for message in messagesKeys
-        expected      
+        expected
       else
         for rule in (@parse rule for rule in rules)
           @push expected, applied for applied in (@apply key, message, rule for key, message of messages)
