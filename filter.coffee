@@ -52,14 +52,14 @@ class Filter
     result
   
   filter: (messages, rules) ->
-    expected = {}
+    result = {}
     unless not messages or (messagesKeys = Object.keys messages ).length is 0
       if not rules or rules.length is 0
-        expected[message] = [] for message in messagesKeys
-        expected
+        result[message] = [] for message in messagesKeys
+        result
       else
         for rule in (@parse rule for rule in rules)
-          @push expected, applied for applied in (@apply key, message, rule for key, message of messages)
-    expected
+          @push result, applied for applied in (@apply key, message, rule for key, message of messages)
+    result
 
 module.exports=Filter
