@@ -71,16 +71,6 @@ class Filter{
     }
   }
   
-  push(expected, applied) {
-    var name;
-    if (expected[name = applied.message] == null) {
-      expected[name] = [];
-    }
-    if (applied.action != null) {
-      return expected[applied.message].push(applied.action);
-    }
-  }
-  
   apply(message, rule) {
     let actual = 0
     let expected = 0;
