@@ -1,19 +1,14 @@
-Filter = require '../filter'
+filter = require '../filter'
 
 describe "Filter Object", ->
-  filter = null
+  # filter = null
   beforeEach ->
-    filter = new Filter()
+    # filter = new Filter()
   
   it "should be defined", ->
     expect(filter).toBeDefined()
     
   describe "parse rule", ->
-    describe "containWildcards", ->
-      it "should return true if there is a wildcard", ->
-        expect(filter.containWildcards '*smth' ).toBeTruthy()
-        expect(filter.containWildcards '?smth' ).toBeTruthy()
-        expect(filter.containWildcards 'smth' ).not.toBeTruthy()
     describe "parse", ->
       it "should return rule in its original state if there were no wildcards", ->
         rule = action: 'an action'
