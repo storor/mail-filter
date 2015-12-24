@@ -47,6 +47,21 @@ class Filter{
     return parsed;
   }
   
+  /*Is proven to be useless and harmful*/
+  cacheMatch(value, expression) {
+    let cached = this.matchCache[expression];
+    let matches;    
+    if(cached && typeof (matches = cached[value]) == 'boolean'){
+      return matches;
+    }
+    matches = this.match(value, expression);
+    if(!cached){
+      cached = this.matchCache[expression] = {};
+    }
+    cached[value] = matches;
+    return matches;
+  }
+  
   match(value, expression) {
     if (typeof expression == 'string') {
       return value === expression;
