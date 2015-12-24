@@ -65,3 +65,13 @@ describe "Filter function", ->
       msg1: []
       msg2: []
       msg3: []
+      
+      
+  describe "performance", ->
+    fit "should be decent", (done)->
+      start = new Date()
+      for iteration in [0..100000] by 1
+        filter input, rules
+      end = new Date()
+      console.log(end.getTime() - start.getTime())
+      done()
