@@ -25,6 +25,10 @@ describe "Filter Object", ->
         rule = action: 'an action', from: 'cde'
         expect(filter.parse rule).toEqual(rule)
         
+      it "should escape special RegExp characters in a string", ->
+        actual = filter.convertExpression '*abc.'
+        expect(actual).toEqual(new RegExp("#{filter.allowedCharset}*abc\\."))
+        
       describe "convertExpression", ->
         it "should return regexp instead of string with wildcards ", ->
           actual = filter.convertExpression '*abc'

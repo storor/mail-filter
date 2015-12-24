@@ -23,6 +23,7 @@ class Filter{
       return expression;
     } else {
       var converted = expression
+        .replace(/[\-\[\]\/\{\}\(\)\+\.\\\^\$\|]/g, "\\$&")
         .replace(/\*/g, this.allowedCharset + "*")
         .replace(/\?/g, this.allowedCharset);
       cached = this.ruleCache[expression] = new RegExp(converted);
