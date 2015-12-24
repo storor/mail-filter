@@ -5,6 +5,20 @@
   <title>Preformance Test</title>
 </head>
 <body>
+  <label for="messages">Messages</label>
+  <textarea id="messages" rows="20" cols="50">
+  
+  </textarea>
+  <label for="rules">Rules</label>
+  <textarea id="rules" rows="20" cols="50">
+  
+  </textarea>
+  
+  <label for="result">Result</label>
+  <textarea id="result" rows="20" cols="50">
+  
+  </textarea>
+  
   <input type="button" value='Run' onclick="run()">
   <script src="dest/app.js" charset="utf-8"></script>
   <script type="text/javascript">
@@ -39,6 +53,12 @@
       }
     ];
     function run(){
+      var messages = JSON.parse(document.getElementById('messages').value)
+      var rules = JSON.parse(document.getElementById('rules').value)
+      document.getElementById('result').value = JSON.stringify(filter(messages, rules), null, 4);
+    }
+    
+    function runPerformance(){
       var end, i, iteration, start;
       start = new Date();
       for (iteration = i = 0; i <= 100000; iteration = i += 1) {
