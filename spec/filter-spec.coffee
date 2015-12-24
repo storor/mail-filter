@@ -1,4 +1,4 @@
-Filter = require './filter'
+Filter = require '../filter'
 
 describe "Filter Object", ->
   filter = null
@@ -38,10 +38,8 @@ describe "Filter Object", ->
       it "should compare with string value of rule if it has no wildcards", ->
         msg = from: 'a', to: 'b'
         rule = from: 'a', action: 'c'
-        actual = filter.apply 'msg', msg, rule
-        expect(actual).toEqual
-          message: 'msg'
-          action: rule.action
+        actual = filter.apply msg, rule
+        expect(actual).toEqual 'c'
       
       describe "match", ->
         it "should return yes if strings are equal", ->

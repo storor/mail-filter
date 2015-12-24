@@ -1,4 +1,4 @@
-filter = require './index'
+filter = require '../index'
 describe "Filter function", ->
   
   it "should be a function", ->

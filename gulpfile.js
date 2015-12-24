@@ -6,13 +6,13 @@ var gulp = require('gulp'),
 		rename = require('gulp-rename');
 
 gulp.task('coffee', function() {
-  return gulp.src('./*.coffee')
+  return gulp.src(['*.coffee', './spec/*.coffee'])
     .pipe(coffee({bare: true}).on('error', gutil.log))
     .pipe(gulp.dest('./dest/'));
 });
 
-gulp.task('browserify', ['coffee'], function() {
-	gulp.src('dest/index.js')
+gulp.task('browserify', function() {
+	gulp.src('index.js')
 		.pipe(browserify({
 			insertGlobals : true
 		}))
