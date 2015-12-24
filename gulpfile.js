@@ -1,12 +1,23 @@
 var gulp = require('gulp'),
 		gutil = require('gulp-util'),
 		jasmine = require('gulp-jasmine'),
-		coffee = require('gulp-coffee');
+		coffee = require('gulp-coffee'),
+		browserify = require('gulp-browserify'),
+		rename = require('gulp-rename');
 
 gulp.task('coffee', function() {
   return gulp.src('./*.coffee')
     .pipe(coffee({bare: true}).on('error', gutil.log))
     .pipe(gulp.dest('./dest/'));
+});
+
+gulp.task('browserify', ['coffee'], function() {
+	gulp.src('dest/index.js')
+		.pipe(browserify({
+			insertGlobals : true
+		}))
+		.pipe(rename('app.js'))
+		.pipe(gulp.dest('./dest'))
 });
 
 gulp.task('test', ['coffee'], function() {

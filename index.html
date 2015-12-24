@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Preformance Test</title>
+</head>
+<body>
+  <input type="button" value='Run' onclick="run()">
+  <script src="dest/app.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var input = {
+      msg1: {
+        from: 'jack@example.com',
+        to: 'jill@example.org'
+      },
+      msg2: {
+        from: 'noreply@spam.com',
+        to: 'jill@example.org'
+      },
+      msg3: {
+        from: 'boss@work.com',
+        to: 'jack@example.com'
+      }
+    };
+    rules = [
+      {
+        from: '*@work.com',
+        action: 'tag work'
+      }, {
+        from: '*@spam.com',
+        action: 'tag spam'
+      }, {
+        from: 'jack@example.com',
+        to: 'jill@example.org',
+        action: 'folder jack'
+      }, {
+        to: 'jill@example.org',
+        action: 'forward to jill@elsewhere.com'
+      }
+    ];
+    function run(){
+      var end, i, iteration, start;
+      start = new Date();
+      for (iteration = i = 0; i <= 100000; iteration = i += 1) {
+        filter(input, rules);
+      }
+      end = new Date();
+      console.log(end.getTime() - start.getTime());      
+    }
+  </script>
+</body>
+</html>

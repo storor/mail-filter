@@ -17,21 +17,21 @@ describe "Filter Object", ->
     describe "parse", ->
       it "should return rule in its original state if there were no wildcards", ->
         rule = action: 'an action'
-        expect(filter.parse rule).toBe(rule)
+        expect(filter.parse rule).toEqual(rule)
         rule = action: 'an action', to: 'abc'
-        expect(filter.parse rule).toBe(rule)
+        expect(filter.parse rule).toEqual(rule)
         rule = action: 'an action', to: 'abc', from: 'cde'
-        expect(filter.parse rule).toBe(rule)
+        expect(filter.parse rule).toEqual(rule)
         rule = action: 'an action', from: 'cde'
-        expect(filter.parse rule).toBe(rule)
+        expect(filter.parse rule).toEqual(rule)
         
-      describe "convertWildcard", ->
+      describe "convertExpression", ->
         it "should return regexp instead of string with wildcards ", ->
-          actual = filter.convertWildcard '*abc'
+          actual = filter.convertExpression '*abc'
           expect(actual).toEqual(new RegExp("#{filter.allowedCharset}*abc"))
-          actual = filter.convertWildcard '?abc'
+          actual = filter.convertExpression '?abc'
           expect(actual).toEqual(new RegExp("#{filter.allowedCharset}abc"))
-          actual = filter.convertWildcard '?abc?'
+          actual = filter.convertExpression '?abc?'
           expect(actual).toEqual(new RegExp("#{filter.allowedCharset}abc#{filter.allowedCharset}"))
         
     describe "apply", ->
