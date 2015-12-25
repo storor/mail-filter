@@ -47,9 +47,9 @@ class Filter{
   }
   
   match(value, expression) {
-    if (typeof expression == 'string') {
+    if (expression.constructor === String) {
       return value === expression;
-    } else if (expression instanceof RegExp) {
+    } else if (expression.constructor === RegExp) {
       return expression.test(value);
     }
   }
