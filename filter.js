@@ -5,12 +5,6 @@ class Filter{
     this.allowedCharset = '[\x20-\x7F]';
     this.ruleCache = {};
     this.matchCache = {};
-    this.cacheHit = 0;
-    this.cachePut = 0;    
-  }
-  
-  containWildcards(expression){
-    return expression && (expression.indexOf('*') >= 0 || expression.indexOf('?') >= 0);    
   }
   
   convertExpression(expression) {
@@ -18,7 +12,7 @@ class Filter{
     if ((cached = this.ruleCache[expression]) != null) {
       return cached;
     }
-    if (!this.containWildcards(expression)) {
+    if (expression.indexOf('*') < 0 && expression.indexOf('?') < 0) {
       this.ruleCache[expression] = expression;
       return expression;
     } else {
@@ -71,47 +65,26 @@ class Filter{
     }
   }
   
-  apply(message, rule) {
-    let actual = 0
-    let expected = 0;
-    if (rule.from) {
-      expected++;
-      if (this.match(message.from, rule.from)) {
-        actual++;
-      }
-    }
-    if (rule.to) {
-      expected++;
-      if (this.match(message.to, rule.to)) {
-        actual++;
-      }
-    }
-    if (expected == actual) {
-      return rule.action;
-    }
-  }
-  
   filter(messages, rules) {
-    var result = {},
-        messagesKeys;
-    if(!messages || (messagesKeys = Object.keys(messages)).length == 0){
+    var result = {};
+    if(Object.keys(messages).length == 0){
       return result;
     }
-    if (!rules || rules.length == 0) {
-      for (var key of messagesKeys) {
+    if (rules.length == 0) {
+      for (let key in messages) {
         result[key] = [];
       }
       return result;
     }  
-    for(let rule of rules){
-      let parsedRule = this.parse(rule);
+    for(let id in rules){
+      let parsedRule = this.parse(rules[id]);
       for(let key in messages){
-        let applied = this.apply(messages[key], parsedRule);
         if(!result[key]){
           result[key] = [];
         }
-        if(applied){
-          result[key].push(applied);
+        let message = messages[key];
+        if((!parsedRule.from || this.match(message.from, parsedRule.from))&&(!parsedRule.to || this.match(message.to, parsedRule.to))){
+          result[key].push(parsedRule.action);          
         }
       }
     }

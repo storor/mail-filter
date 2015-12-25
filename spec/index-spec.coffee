@@ -67,7 +67,7 @@ describe "Filter function", ->
       msg3: []
       
       
-  xdescribe "performance", ->
+  fdescribe "performance", ->
     it "should be decent", (done)->
       start = new Date()
       for iteration in [0..100000] by 1

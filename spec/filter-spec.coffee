@@ -9,11 +9,6 @@ describe "Filter Object", ->
     expect(filter).toBeDefined()
     
   describe "parse rule", ->
-    describe "containWildcards", ->
-      it "should return true if there is a wildcard", ->
-        expect(filter.containWildcards '*smth' ).toBeTruthy()
-        expect(filter.containWildcards '?smth' ).toBeTruthy()
-        expect(filter.containWildcards 'smth' ).not.toBeTruthy()
     describe "parse", ->
       it "should return rule in its original state if there were no wildcards", ->
         rule = action: 'an action'
