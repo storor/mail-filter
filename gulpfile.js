@@ -11,7 +11,7 @@ gulp.task('coffee', function() {
     .pipe(gulp.dest('./dest/'));
 });
 
-gulp.task('browserify', function() {
+gulp.task('bro', function() {
 	gulp.src('index.js')
 		.pipe(browserify({
 			insertGlobals : true

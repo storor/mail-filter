@@ -18,11 +18,13 @@
   <textarea id="result" rows="20" cols="50">
   
   </textarea>
-  
+  <br>
+  <br>
   <input type="button" value='Run' onclick="run()">
+  <input type="button" value='Run Rerformance' onclick="runPerformance()">
   <script src="dest/app.js" charset="utf-8"></script>
   <script type="text/javascript">
-    var input = {
+    var initialMessages = {
       msg1: {
         from: 'jack@example.com',
         to: 'jill@example.org'
@@ -36,7 +38,7 @@
         to: 'jack@example.com'
       }
     };
-    rules = [
+    initialRules = [
       {
         from: '*@work.com',
         action: 'tag work'
@@ -52,20 +54,34 @@
         action: 'forward to jill@elsewhere.com'
       }
     ];
+    var messagesNode = document.getElementById('messages');
+    var rulesNode = document.getElementById('rules');
+    var resultNode = document.getElementById('result');
+    
+    messagesNode.value = JSON.stringify(initialMessages, null, 4);
+    rulesNode.value = JSON.stringify(initialRules, null, 4);
+    
     function run(){
-      var messages = JSON.parse(document.getElementById('messages').value)
-      var rules = JSON.parse(document.getElementById('rules').value)
-      document.getElementById('result').value = JSON.stringify(filter(messages, rules), null, 4);
+      var messages = JSON.parse(messagesNode.value);
+      var rules = JSON.parse(rulesNode.value);
+      resultNode.value = JSON.stringify(filter(messages, rules), null, 4);
     }
     
     function runPerformance(){
+      var messages = JSON.parse(messagesNode.value);
+      var rules = JSON.parse(rulesNode.value);
+      // var messages = initialMessages;
+      // var rules = initialRules;
       var end, i, iteration, start;
       start = new Date();
-      for (iteration = i = 0; i <= 100000; iteration = i += 1) {
-        filter(input, rules);
+      var iterations = 100000;
+      for (iteration = i = 0; i <= iterations; iteration = i += 1) {
+        filter(messages, rules);
       }
       end = new Date();
-      console.log(end.getTime() - start.getTime());      
+      var time = end.getTime() - start.getTime();
+      resultNode.value=`${iterations} iterations in ${time} ms`;
+      console.log(time);      
     }
   </script>
 </body>
