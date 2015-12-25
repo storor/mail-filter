@@ -1,9 +1,6 @@
-Filter = require '../filter'
+filter = require '../filter'
 
 describe "Filter Object", ->
-  filter = null
-  beforeEach ->
-    filter = new Filter()
   
   it "should be defined", ->
     expect(filter).toBeDefined()
@@ -33,3 +30,17 @@ describe "Filter Object", ->
           expect(actual).toEqual(new RegExp("[\x20-\x7F]abc"))
           actual = filter.convertExpression '?abc?'
           expect(actual).toEqual(new RegExp("[\x20-\x7F]abc[\x20-\x7F]"))
+        
+    describe "apply", ->
+      it "should compare with string value of rule if it has no wildcards", ->
+        msg = from: 'a', to: 'b'
+        rule = from: 'a', action: 'c'
+        actual = filter.apply msg, rule
+        expect(actual).toEqual 'c'
+      
+      describe "match", ->
+        it "should return yes if strings are equal", ->
+          expect(filter.match 'a', 'a').toBeTruthy()
+
+        it "should return no if strings are not equal", ->
+          expect(filter.match 'a', 'b').not.toBeTruthy()
