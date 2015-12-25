@@ -7,7 +7,7 @@ class Filter{
     this.specialCharacters = /[\*\?]/;
     this.regexCharacters = /[\-\[\]\/\{\}\(\)\+\.\\\^\$\|]/g;
     this.asterix = /\*/g;
-    this.question = /\*/g;
+    this.question = /\?/g;
   }
   
   convertExpression(expression) {
@@ -53,27 +53,7 @@ class Filter{
       return expression.test(value);
     }
   }
-  
-  apply(message, rule) {
-    let actual = 0
-    let expected = 0;
-    if (rule.from) {
-      expected++;
-      if (this.match(message.from, rule.from)) {
-        actual++;
-      }
-    }
-    if (rule.to) {
-      expected++;
-      if (this.match(message.to, rule.to)) {
-        actual++;
-      }
-    }
-    if (expected == actual) {
-      return rule.action;
-    }
-  }
-  
+    
   filter(messages, rules) {
     var result = {},
         messagesKeys;
@@ -89,12 +69,13 @@ class Filter{
     for(let rule of rules){
       let parsedRule = this.parse(rule);
       for(let key in messages){
-        let applied = this.apply(messages[key], parsedRule);
         if(!result[key]){
           result[key] = [];
         }
-        if(applied){
-          result[key].push(applied);
+        let message = messages[key];
+        if((!parsedRule.from || this.match(message.from, parsedRule.from)) 
+          && (!parsedRule.to || this.match(message.to, parsedRule.to))){
+          result[key].push(parsedRule.action);
         }
       }
     }
