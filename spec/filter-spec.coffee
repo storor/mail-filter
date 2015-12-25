@@ -8,8 +8,8 @@ describe "Filter Object", ->
   it "should be defined", ->
     expect(filter).toBeDefined()
     
-  describe "parse rule", ->
-    describe "containWildcards", ->
+  xdescribe "parse rule", ->
+    xdescribe "containWildcards", ->
       it "should return true if there is a wildcard", ->
         expect(filter.containWildcards '*smth' ).toBeTruthy()
         expect(filter.containWildcards '?smth' ).toBeTruthy()

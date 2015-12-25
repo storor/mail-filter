@@ -2,32 +2,30 @@
 
 class Filter{
   constructor(){
-    this.allowedCharset = '[\x20-\x7F]';
     this.ruleCache = {};
     this.matchCache = {};
-    this.cacheHit = 0;
-    this.cachePut = 0;    
-  }
-  
-  containWildcards(expression){
-    return expression && (expression.indexOf('*') >= 0 || expression.indexOf('?') >= 0);    
+    this.specialCharacters = /[\*\?]/;
+    this.regexCharacters = /[\-\[\]\/\{\}\(\)\+\.\\\^\$\|]/g;
+    this.asterix = /\*/g;
+    this.question = /\*/g;
   }
   
   convertExpression(expression) {
-    var cached;
-    if ((cached = this.ruleCache[expression]) != null) {
+    var cache = this.ruleCache;
+    var cached = cache[expression];
+    if (cached) {
       return cached;
     }
-    if (!this.containWildcards(expression)) {
-      this.ruleCache[expression] = expression;
-      return expression;
-    } else {
+    if (this.specialCharacters.test(expression)) {
       var converted = expression
-        .replace(/[\-\[\]\/\{\}\(\)\+\.\\\^\$\|]/g, "\\$&")
-        .replace(/\*/g, this.allowedCharset + "*")
-        .replace(/\?/g, this.allowedCharset);
-      cached = this.ruleCache[expression] = new RegExp(converted);
+        .replace(this.regexCharacters, "\\$&")
+        .replace(this.asterix, '[\x20-\x7F]*')
+        .replace(this.question, '[\x20-\x7F]');
+      cached = cache[expression] = new RegExp(converted);
       return cached;
+    } else {
+      cache[expression] = expression;
+      return expression;      
     }
   }
   
@@ -46,21 +44,6 @@ class Filter{
       parsed.to = this.convertExpression(rule.to);
     }
     return parsed;
-  }
-  
-  /*Is proven to be useless and harmful*/
-  cacheMatch(value, expression) {
-    let cached = this.matchCache[expression];
-    let matches;    
-    if(cached && typeof (matches = cached[value]) == 'boolean'){
-      return matches;
-    }
-    matches = this.match(value, expression);
-    if(!cached){
-      cached = this.matchCache[expression] = {};
-    }
-    cached[value] = matches;
-    return matches;
   }
   
   match(value, expression) {
@@ -94,10 +77,10 @@ class Filter{
   filter(messages, rules) {
     var result = {},
         messagesKeys;
-    if(!messages || (messagesKeys = Object.keys(messages)).length == 0){
+    if((messagesKeys = Object.keys(messages)).length == 0){
       return result;
     }
-    if (!rules || rules.length == 0) {
+    if (rules.length == 0) {
       for (var key of messagesKeys) {
         result[key] = [];
       }
