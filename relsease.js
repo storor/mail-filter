@@ -95,10 +95,4 @@ function filter(messages, rules){
   return result;
 }
 
-module.exports={
-  filter: filter,
-  parse: parse,
-  apply: apply,
-  match: match,
-  convertExpression: convertExpression
-};
+module.exports = filter;
